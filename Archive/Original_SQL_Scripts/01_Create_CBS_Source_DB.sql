@@ -1,0 +1,2 @@
+CREATE DATABASE CBS_Source_DB;
+GO
