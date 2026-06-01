@@ -2,6 +2,8 @@
 
 A production-style Data Engineering and Fraud Analytics project that demonstrates incremental ETL processing, fraud detection, case management, audit logging, and interactive business intelligence dashboards using SQL Server, SSIS, Python, and Tableau.
 
+<img width="1600" height="868" alt="Dashboard_Main" src="https://github.com/user-attachments/assets/42fd009b-b9c0-4cea-b815-f831c0540c0e" />
+
 ---
 
 ## Project Overview
@@ -240,17 +242,17 @@ The Tableau dashboard provides:
 
 ## Dashboard Preview
 
-### Main Dashboard
+### Dashboard Analytics
 
-![Dashboard](07_Documentation/Screenshots/Dashboard_Main.png)
+<img width="1600" height="607" alt="Dashboard_Analytics" src="https://github.com/user-attachments/assets/a6fce26f-ddee-49d7-8fcb-69d88df3835e" />
 
 ### Architecture
 
-![Architecture](07_Documentation/Architecture_Diagram.png)
+<img width="2816" height="1536" alt="Architecture_Diagram" src="https://github.com/user-attachments/assets/70195969-6eb8-48a6-832b-dc72fe59d98a" />
 
 ### ETL Flow
 
-![ETL Flow](07_Documentation/ETL_Flow_Diagram.png)
+<img width="2816" height="1536" alt="ETL_Flow_Diagram" src="https://github.com/user-attachments/assets/440ec23b-9737-41e9-9d03-fddf91e9ddc9" />
 
 ---
 
