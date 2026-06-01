@@ -1,0 +1,2116 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="5/25/2026 12:45:25 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="SOHAM_PC"
+  DTS:CreatorName="SOHAM_PC\sppuj"
+  DTS:DTSID="{5F148E98-A5C0-4F21-8C18-3B3DADD675A8}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="17.0.1016.0"
+  DTS:LocaleID="16393"
+  DTS:ObjectName="Package"
+  DTS:PackageType="5"
+  DTS:VersionBuild="19"
+  DTS:VersionGUID="{39B6EF2C-E661-4C64-8E5F-B4F3586A8F58}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[CBS_Source_Connection]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{A27FE9CA-A666-4103-9BD8-7221F5869E10}"
+      DTS:ObjectName="CBS_Source_Connection">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectRetryCount="1"
+          DTS:ConnectRetryInterval="5"
+          DTS:ConnectionString="Data Source=localhost;Initial Catalog=CBS_Source_DB;Provider=SQLNCLI11.1;Integrated Security=SSPI;Application Name=SSIS-Package-{A27FE9CA-A666-4103-9BD8-7221F5869E10}localhost.CBS_Source_DB;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[DW_Connection]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{359EFA7A-0C6E-4D3C-B64A-CE2662E8EAC3}"
+      DTS:ObjectName="DW_Connection">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectRetryCount="1"
+          DTS:ConnectRetryInterval="5"
+          DTS:ConnectionString="Data Source=localhost;Initial Catalog=FraudMonitoringDW;Provider=SQLNCLI11.1;Integrated Security=SSPI;Application Name=SSIS-Package-{359EFA7A-0C6E-4D3C-B64A-CE2662E8EAC3}localhost.FraudMonitoringDW;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{93C1F40D-D64D-4B3F-A07D-ABC90506F72E}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="RowCount">
+      <DTS:VariableValue
+        DTS:DataType="3">100</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Error Handling Flow"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{613AB836-679A-4DDA-80A2-B0901A50B017}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Error Handling Flow"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\Error Handling Flow\Conditional Split"
+              componentClassID="Microsoft.ConditionalSplit"
+              contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
+              name="Conditional Split"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\Error Handling Flow\Conditional Split.Inputs[Conditional Split Input]"
+                  description="Input to the Conditional Split Transformation"
+                  name="Conditional Split Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Error Handling Flow\Conditional Split.Inputs[Conditional Split Input].Columns[CustomerName]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="CustomerName"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[CustomerName]" />
+                    <inputColumn
+                      refId="Package\Error Handling Flow\Conditional Split.Inputs[Conditional Split Input].Columns[TransactionAmount]"
+                      cachedDataType="numeric"
+                      cachedName="TransactionAmount"
+                      cachedPrecision="18"
+                      cachedScale="2"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[TransactionAmount]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Error Handling Flow\Conditional Split.Outputs[InvalidAmount]"
+                  description="Output 1 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="InvalidAmount"
+                  synchronousInputId="Package\Error Handling Flow\Conditional Split.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">#{Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[TransactionAmount]} &lt; 0</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">TransactionAmount &lt; 0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">0</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Error Handling Flow\Conditional Split.Outputs[MissingCustomer]"
+                  description="Output 2 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="MissingCustomer"
+                  synchronousInputId="Package\Error Handling Flow\Conditional Split.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">[ISNULL](#{Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[CustomerName]})</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">ISNULL(CustomerName)</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">1</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Error Handling Flow\Conditional Split.Outputs[ValidRows]"
+                  description="Default Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  name="ValidRows"
+                  synchronousInputId="Package\Error Handling Flow\Conditional Split.Inputs[Conditional Split Input]">
+                  <properties>
+                    <property
+                      dataType="System.Boolean"
+                      name="IsDefaultOut">true</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Error Handling Flow\Conditional Split.Outputs[Conditional Split Error Output]"
+                  description="Error Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Conditional Split Error Output"
+                  synchronousInputId="Package\Error Handling Flow\Conditional Split.Inputs[Conditional Split Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Error Handling Flow\Conditional Split.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Error Handling Flow\Conditional Split.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Error Handling Flow\Conditional Split.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Error Handling Flow\Conditional Split.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Error Handling Flow\OLE DB Source"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="OLE DB Source"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[Staging_Transactions]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT *
+FROM CBS_Transactions
+WHERE TransactionTime &gt;
+(
+    SELECT LastLoadTime
+    FROM FraudMonitoringDW.dbo.ETL_Watermark
+)</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Error Handling Flow\OLE DB Source.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[CBS_Source_Connection]"
+                  connectionManagerRefId="Package.ConnectionManagers[CBS_Source_Connection]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[TransactionID]"
+                      dataType="i8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[TransactionID]"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[TransactionID]"
+                      name="TransactionID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[AccountNumber]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[AccountNumber]"
+                      length="20"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[AccountNumber]"
+                      name="AccountNumber"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[CustomerName]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[CustomerName]"
+                      length="100"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[CustomerName]"
+                      name="CustomerName"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[TransactionType]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[TransactionType]"
+                      length="20"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[TransactionType]"
+                      name="TransactionType"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[TransactionAmount]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[TransactionAmount]"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[TransactionAmount]"
+                      name="TransactionAmount"
+                      precision="18"
+                      scale="2"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[TransactionTime]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[TransactionTime]"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[TransactionTime]"
+                      name="TransactionTime"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[MerchantCategory]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[MerchantCategory]"
+                      length="50"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[MerchantCategory]"
+                      name="MerchantCategory"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[TransactionLocation]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[TransactionLocation]"
+                      length="100"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[TransactionLocation]"
+                      name="TransactionLocation"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[DeviceID]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[DeviceID]"
+                      length="50"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[DeviceID]"
+                      name="DeviceID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[IPAddress]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[IPAddress]"
+                      length="50"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[IPAddress]"
+                      name="IPAddress"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[TransactionStatus]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[TransactionStatus]"
+                      length="20"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[TransactionStatus]"
+                      name="TransactionStatus"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[RiskScore]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[RiskScore]"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[RiskScore]"
+                      name="RiskScore"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[FraudFlag]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[FraudFlag]"
+                      length="10"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[FraudFlag]"
+                      name="FraudFlag"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[FraudSeverity]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[FraudSeverity]"
+                      length="20"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[FraudSeverity]"
+                      name="FraudSeverity"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[TransactionID]"
+                      dataType="i8"
+                      name="TransactionID" />
+                    <externalMetadataColumn
+                      refId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[AccountNumber]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="AccountNumber" />
+                    <externalMetadataColumn
+                      refId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[CustomerName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="CustomerName" />
+                    <externalMetadataColumn
+                      refId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[TransactionType]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="TransactionType" />
+                    <externalMetadataColumn
+                      refId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[TransactionAmount]"
+                      dataType="numeric"
+                      name="TransactionAmount"
+                      precision="18"
+                      scale="2" />
+                    <externalMetadataColumn
+                      refId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[TransactionTime]"
+                      dataType="dbTimeStamp"
+                      name="TransactionTime" />
+                    <externalMetadataColumn
+                      refId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[MerchantCategory]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="MerchantCategory" />
+                    <externalMetadataColumn
+                      refId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[TransactionLocation]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="TransactionLocation" />
+                    <externalMetadataColumn
+                      refId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[DeviceID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="DeviceID" />
+                    <externalMetadataColumn
+                      refId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[IPAddress]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="IPAddress" />
+                    <externalMetadataColumn
+                      refId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[TransactionStatus]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="TransactionStatus" />
+                    <externalMetadataColumn
+                      refId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[RiskScore]"
+                      dataType="i4"
+                      name="RiskScore" />
+                    <externalMetadataColumn
+                      refId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[FraudFlag]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      name="FraudFlag" />
+                    <externalMetadataColumn
+                      refId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[FraudSeverity]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="FraudSeverity" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[TransactionID]"
+                      dataType="i8"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[TransactionID]"
+                      name="TransactionID" />
+                    <outputColumn
+                      refId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[AccountNumber]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[AccountNumber]"
+                      name="AccountNumber" />
+                    <outputColumn
+                      refId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[CustomerName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[CustomerName]"
+                      name="CustomerName" />
+                    <outputColumn
+                      refId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[TransactionType]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[TransactionType]"
+                      name="TransactionType" />
+                    <outputColumn
+                      refId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[TransactionAmount]"
+                      dataType="numeric"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[TransactionAmount]"
+                      name="TransactionAmount"
+                      precision="18"
+                      scale="2" />
+                    <outputColumn
+                      refId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[TransactionTime]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[TransactionTime]"
+                      name="TransactionTime" />
+                    <outputColumn
+                      refId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[MerchantCategory]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[MerchantCategory]"
+                      name="MerchantCategory" />
+                    <outputColumn
+                      refId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[TransactionLocation]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[TransactionLocation]"
+                      name="TransactionLocation" />
+                    <outputColumn
+                      refId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[DeviceID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[DeviceID]"
+                      name="DeviceID" />
+                    <outputColumn
+                      refId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[IPAddress]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[IPAddress]"
+                      name="IPAddress" />
+                    <outputColumn
+                      refId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[TransactionStatus]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[TransactionStatus]"
+                      name="TransactionStatus" />
+                    <outputColumn
+                      refId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[RiskScore]"
+                      dataType="i4"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[RiskScore]"
+                      name="RiskScore" />
+                    <outputColumn
+                      refId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[FraudFlag]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[FraudFlag]"
+                      name="FraudFlag" />
+                    <outputColumn
+                      refId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[FraudSeverity]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[FraudSeverity]"
+                      name="FraudSeverity" />
+                    <outputColumn
+                      refId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Error Handling Flow\Rejected Transactions Destination"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="Rejected Transactions Destination"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[Rejected_Transactions]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Error Handling Flow\Rejected Transactions Destination.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[DW_Connection]"
+                  connectionManagerRefId="Package.ConnectionManagers[DW_Connection]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Error Handling Flow\Rejected Transactions Destination.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Error Handling Flow\Rejected Transactions Destination.Inputs[OLE DB Destination Input].Columns[TransactionID]"
+                      cachedDataType="i8"
+                      cachedName="TransactionID"
+                      externalMetadataColumnId="Package\Error Handling Flow\Rejected Transactions Destination.Inputs[OLE DB Destination Input].ExternalColumns[TransactionID]"
+                      lineageId="Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[TransactionID]" />
+                    <inputColumn
+                      refId="Package\Error Handling Flow\Rejected Transactions Destination.Inputs[OLE DB Destination Input].Columns[AccountNumber]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="AccountNumber"
+                      externalMetadataColumnId="Package\Error Handling Flow\Rejected Transactions Destination.Inputs[OLE DB Destination Input].ExternalColumns[AccountNumber]"
+                      lineageId="Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[AccountNumber]" />
+                    <inputColumn
+                      refId="Package\Error Handling Flow\Rejected Transactions Destination.Inputs[OLE DB Destination Input].Columns[CustomerName]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="CustomerName"
+                      externalMetadataColumnId="Package\Error Handling Flow\Rejected Transactions Destination.Inputs[OLE DB Destination Input].ExternalColumns[CustomerName]"
+                      lineageId="Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[CustomerName]" />
+                    <inputColumn
+                      refId="Package\Error Handling Flow\Rejected Transactions Destination.Inputs[OLE DB Destination Input].Columns[TransactionType]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="TransactionType"
+                      externalMetadataColumnId="Package\Error Handling Flow\Rejected Transactions Destination.Inputs[OLE DB Destination Input].ExternalColumns[TransactionType]"
+                      lineageId="Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[TransactionType]" />
+                    <inputColumn
+                      refId="Package\Error Handling Flow\Rejected Transactions Destination.Inputs[OLE DB Destination Input].Columns[TransactionAmount]"
+                      cachedDataType="numeric"
+                      cachedName="TransactionAmount"
+                      cachedPrecision="18"
+                      cachedScale="2"
+                      externalMetadataColumnId="Package\Error Handling Flow\Rejected Transactions Destination.Inputs[OLE DB Destination Input].ExternalColumns[TransactionAmount]"
+                      lineageId="Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[TransactionAmount]" />
+                    <inputColumn
+                      refId="Package\Error Handling Flow\Rejected Transactions Destination.Inputs[OLE DB Destination Input].Columns[TransactionStatus]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="TransactionStatus"
+                      externalMetadataColumnId="Package\Error Handling Flow\Rejected Transactions Destination.Inputs[OLE DB Destination Input].ExternalColumns[TransactionStatus]"
+                      lineageId="Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[TransactionStatus]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Error Handling Flow\Rejected Transactions Destination.Inputs[OLE DB Destination Input].ExternalColumns[RejectID]"
+                      dataType="i4"
+                      name="RejectID" />
+                    <externalMetadataColumn
+                      refId="Package\Error Handling Flow\Rejected Transactions Destination.Inputs[OLE DB Destination Input].ExternalColumns[TransactionID]"
+                      dataType="i8"
+                      name="TransactionID" />
+                    <externalMetadataColumn
+                      refId="Package\Error Handling Flow\Rejected Transactions Destination.Inputs[OLE DB Destination Input].ExternalColumns[AccountNumber]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="AccountNumber" />
+                    <externalMetadataColumn
+                      refId="Package\Error Handling Flow\Rejected Transactions Destination.Inputs[OLE DB Destination Input].ExternalColumns[CustomerName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="CustomerName" />
+                    <externalMetadataColumn
+                      refId="Package\Error Handling Flow\Rejected Transactions Destination.Inputs[OLE DB Destination Input].ExternalColumns[TransactionType]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="TransactionType" />
+                    <externalMetadataColumn
+                      refId="Package\Error Handling Flow\Rejected Transactions Destination.Inputs[OLE DB Destination Input].ExternalColumns[TransactionAmount]"
+                      dataType="numeric"
+                      name="TransactionAmount"
+                      precision="18"
+                      scale="2" />
+                    <externalMetadataColumn
+                      refId="Package\Error Handling Flow\Rejected Transactions Destination.Inputs[OLE DB Destination Input].ExternalColumns[TransactionStatus]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="TransactionStatus" />
+                    <externalMetadataColumn
+                      refId="Package\Error Handling Flow\Rejected Transactions Destination.Inputs[OLE DB Destination Input].ExternalColumns[RejectReason]"
+                      codePage="1252"
+                      dataType="str"
+                      length="200"
+                      name="RejectReason" />
+                    <externalMetadataColumn
+                      refId="Package\Error Handling Flow\Rejected Transactions Destination.Inputs[OLE DB Destination Input].ExternalColumns[RejectTime]"
+                      dataType="dbTimeStamp"
+                      name="RejectTime" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Error Handling Flow\Rejected Transactions Destination.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\Error Handling Flow\Rejected Transactions Destination.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Error Handling Flow\Rejected Transactions Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Error Handling Flow\Rejected Transactions Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Error Handling Flow\Rejected Transactions Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Error Handling Flow\Rejected Transactions Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Error Handling Flow\Union All"
+              componentClassID="Microsoft.UnionAll"
+              contactInfo="Union All;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+              description="Combines rows from multiple data flows without sorting. For example, add rows back to a data flow after correction of errors. If sorting is important, we recommend using the Merge transformation."
+              name="Union All"
+              version="1">
+              <inputs>
+                <input
+                  refId="Package\Error Handling Flow\Union All.Inputs[Union All Input 1]"
+                  name="Union All Input 1">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Error Handling Flow\Union All.Inputs[Union All Input 1].Columns[TransactionID]"
+                      cachedDataType="i8"
+                      cachedName="TransactionID"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[TransactionID]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[TransactionID]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Error Handling Flow\Union All.Inputs[Union All Input 1].Columns[AccountNumber]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="AccountNumber"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[AccountNumber]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[AccountNumber]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Error Handling Flow\Union All.Inputs[Union All Input 1].Columns[CustomerName]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="CustomerName"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[CustomerName]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[CustomerName]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Error Handling Flow\Union All.Inputs[Union All Input 1].Columns[TransactionType]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="TransactionType"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[TransactionType]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[TransactionType]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Error Handling Flow\Union All.Inputs[Union All Input 1].Columns[TransactionAmount]"
+                      cachedDataType="numeric"
+                      cachedName="TransactionAmount"
+                      cachedPrecision="18"
+                      cachedScale="2"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[TransactionAmount]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[TransactionAmount]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Error Handling Flow\Union All.Inputs[Union All Input 1].Columns[TransactionTime]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="TransactionTime"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[TransactionTime]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[TransactionTime]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Error Handling Flow\Union All.Inputs[Union All Input 1].Columns[MerchantCategory]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="MerchantCategory"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[MerchantCategory]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[MerchantCategory]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Error Handling Flow\Union All.Inputs[Union All Input 1].Columns[TransactionLocation]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="TransactionLocation"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[TransactionLocation]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[TransactionLocation]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Error Handling Flow\Union All.Inputs[Union All Input 1].Columns[DeviceID]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="DeviceID"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[DeviceID]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[DeviceID]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Error Handling Flow\Union All.Inputs[Union All Input 1].Columns[IPAddress]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="IPAddress"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[IPAddress]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[IPAddress]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Error Handling Flow\Union All.Inputs[Union All Input 1].Columns[TransactionStatus]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="TransactionStatus"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[TransactionStatus]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[TransactionStatus]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Error Handling Flow\Union All.Inputs[Union All Input 1].Columns[RiskScore]"
+                      cachedDataType="i4"
+                      cachedName="RiskScore"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[RiskScore]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[RiskScore]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Error Handling Flow\Union All.Inputs[Union All Input 1].Columns[FraudFlag]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="10"
+                      cachedName="FraudFlag"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[FraudFlag]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[FraudFlag]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Error Handling Flow\Union All.Inputs[Union All Input 1].Columns[FraudSeverity]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="FraudSeverity"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[FraudSeverity]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[FraudSeverity]}</property>
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+                <input
+                  refId="Package\Error Handling Flow\Union All.Inputs[Union All Input 3]"
+                  hasSideEffects="true"
+                  name="Union All Input 3">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Error Handling Flow\Union All.Inputs[Union All Input 3].Columns[TransactionID]"
+                      cachedDataType="i8"
+                      cachedName="TransactionID"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[TransactionID]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[TransactionID]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Error Handling Flow\Union All.Inputs[Union All Input 3].Columns[AccountNumber]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="AccountNumber"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[AccountNumber]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[AccountNumber]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Error Handling Flow\Union All.Inputs[Union All Input 3].Columns[CustomerName]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="CustomerName"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[CustomerName]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[CustomerName]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Error Handling Flow\Union All.Inputs[Union All Input 3].Columns[TransactionType]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="TransactionType"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[TransactionType]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[TransactionType]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Error Handling Flow\Union All.Inputs[Union All Input 3].Columns[TransactionAmount]"
+                      cachedDataType="numeric"
+                      cachedName="TransactionAmount"
+                      cachedPrecision="18"
+                      cachedScale="2"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[TransactionAmount]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[TransactionAmount]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Error Handling Flow\Union All.Inputs[Union All Input 3].Columns[TransactionTime]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="TransactionTime"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[TransactionTime]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[TransactionTime]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Error Handling Flow\Union All.Inputs[Union All Input 3].Columns[MerchantCategory]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="MerchantCategory"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[MerchantCategory]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[MerchantCategory]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Error Handling Flow\Union All.Inputs[Union All Input 3].Columns[TransactionLocation]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="TransactionLocation"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[TransactionLocation]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[TransactionLocation]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Error Handling Flow\Union All.Inputs[Union All Input 3].Columns[DeviceID]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="DeviceID"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[DeviceID]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[DeviceID]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Error Handling Flow\Union All.Inputs[Union All Input 3].Columns[IPAddress]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="IPAddress"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[IPAddress]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[IPAddress]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Error Handling Flow\Union All.Inputs[Union All Input 3].Columns[TransactionStatus]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="TransactionStatus"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[TransactionStatus]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[TransactionStatus]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Error Handling Flow\Union All.Inputs[Union All Input 3].Columns[RiskScore]"
+                      cachedDataType="i4"
+                      cachedName="RiskScore"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[RiskScore]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[RiskScore]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Error Handling Flow\Union All.Inputs[Union All Input 3].Columns[FraudFlag]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="10"
+                      cachedName="FraudFlag"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[FraudFlag]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[FraudFlag]}</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Error Handling Flow\Union All.Inputs[Union All Input 3].Columns[FraudSeverity]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="FraudSeverity"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[FraudSeverity]">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Output column lineage ID"
+                          name="OutputColumnLineageID">#{Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[FraudSeverity]}</property>
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+                <input
+                  refId="Package\Error Handling Flow\Union All.Inputs[Union All Input 2]"
+                  dangling="true"
+                  hasSideEffects="true"
+                  name="Union All Input 2">
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Error Handling Flow\Union All.Outputs[Union All Output 1]"
+                  name="Union All Output 1">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[TransactionID]"
+                      dataType="i8"
+                      lineageId="Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[TransactionID]"
+                      name="TransactionID" />
+                    <outputColumn
+                      refId="Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[AccountNumber]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      lineageId="Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[AccountNumber]"
+                      name="AccountNumber" />
+                    <outputColumn
+                      refId="Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[CustomerName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      lineageId="Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[CustomerName]"
+                      name="CustomerName" />
+                    <outputColumn
+                      refId="Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[TransactionType]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      lineageId="Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[TransactionType]"
+                      name="TransactionType" />
+                    <outputColumn
+                      refId="Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[TransactionAmount]"
+                      dataType="numeric"
+                      lineageId="Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[TransactionAmount]"
+                      name="TransactionAmount"
+                      precision="18"
+                      scale="2" />
+                    <outputColumn
+                      refId="Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[TransactionTime]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[TransactionTime]"
+                      name="TransactionTime" />
+                    <outputColumn
+                      refId="Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[MerchantCategory]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[MerchantCategory]"
+                      name="MerchantCategory" />
+                    <outputColumn
+                      refId="Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[TransactionLocation]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      lineageId="Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[TransactionLocation]"
+                      name="TransactionLocation" />
+                    <outputColumn
+                      refId="Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[DeviceID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[DeviceID]"
+                      name="DeviceID" />
+                    <outputColumn
+                      refId="Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[IPAddress]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[IPAddress]"
+                      name="IPAddress" />
+                    <outputColumn
+                      refId="Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[TransactionStatus]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      lineageId="Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[TransactionStatus]"
+                      name="TransactionStatus" />
+                    <outputColumn
+                      refId="Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[RiskScore]"
+                      dataType="i4"
+                      lineageId="Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[RiskScore]"
+                      name="RiskScore" />
+                    <outputColumn
+                      refId="Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[FraudFlag]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      lineageId="Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[FraudFlag]"
+                      name="FraudFlag" />
+                    <outputColumn
+                      refId="Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[FraudSeverity]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      lineageId="Package\Error Handling Flow\Union All.Outputs[Union All Output 1].Columns[FraudSeverity]"
+                      name="FraudSeverity" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Error Handling Flow\Valid Transactions Destination"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="Valid Transactions Destination"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[Fact_Transactions]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Error Handling Flow\Valid Transactions Destination.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[DW_Connection]"
+                  connectionManagerRefId="Package.ConnectionManagers[DW_Connection]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Error Handling Flow\Valid Transactions Destination.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Error Handling Flow\Valid Transactions Destination.Inputs[OLE DB Destination Input].Columns[TransactionID]"
+                      cachedDataType="i8"
+                      cachedName="TransactionID"
+                      externalMetadataColumnId="Package\Error Handling Flow\Valid Transactions Destination.Inputs[OLE DB Destination Input].ExternalColumns[TransactionID]"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[TransactionID]" />
+                    <inputColumn
+                      refId="Package\Error Handling Flow\Valid Transactions Destination.Inputs[OLE DB Destination Input].Columns[AccountNumber]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="AccountNumber"
+                      externalMetadataColumnId="Package\Error Handling Flow\Valid Transactions Destination.Inputs[OLE DB Destination Input].ExternalColumns[AccountNumber]"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[AccountNumber]" />
+                    <inputColumn
+                      refId="Package\Error Handling Flow\Valid Transactions Destination.Inputs[OLE DB Destination Input].Columns[CustomerName]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="CustomerName"
+                      externalMetadataColumnId="Package\Error Handling Flow\Valid Transactions Destination.Inputs[OLE DB Destination Input].ExternalColumns[CustomerName]"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[CustomerName]" />
+                    <inputColumn
+                      refId="Package\Error Handling Flow\Valid Transactions Destination.Inputs[OLE DB Destination Input].Columns[TransactionType]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="TransactionType"
+                      externalMetadataColumnId="Package\Error Handling Flow\Valid Transactions Destination.Inputs[OLE DB Destination Input].ExternalColumns[TransactionType]"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[TransactionType]" />
+                    <inputColumn
+                      refId="Package\Error Handling Flow\Valid Transactions Destination.Inputs[OLE DB Destination Input].Columns[TransactionAmount]"
+                      cachedDataType="numeric"
+                      cachedName="TransactionAmount"
+                      cachedPrecision="18"
+                      cachedScale="2"
+                      externalMetadataColumnId="Package\Error Handling Flow\Valid Transactions Destination.Inputs[OLE DB Destination Input].ExternalColumns[TransactionAmount]"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[TransactionAmount]" />
+                    <inputColumn
+                      refId="Package\Error Handling Flow\Valid Transactions Destination.Inputs[OLE DB Destination Input].Columns[TransactionTime]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="TransactionTime"
+                      externalMetadataColumnId="Package\Error Handling Flow\Valid Transactions Destination.Inputs[OLE DB Destination Input].ExternalColumns[TransactionTime]"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[TransactionTime]" />
+                    <inputColumn
+                      refId="Package\Error Handling Flow\Valid Transactions Destination.Inputs[OLE DB Destination Input].Columns[MerchantCategory]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="MerchantCategory"
+                      externalMetadataColumnId="Package\Error Handling Flow\Valid Transactions Destination.Inputs[OLE DB Destination Input].ExternalColumns[MerchantCategory]"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[MerchantCategory]" />
+                    <inputColumn
+                      refId="Package\Error Handling Flow\Valid Transactions Destination.Inputs[OLE DB Destination Input].Columns[TransactionLocation]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="TransactionLocation"
+                      externalMetadataColumnId="Package\Error Handling Flow\Valid Transactions Destination.Inputs[OLE DB Destination Input].ExternalColumns[TransactionLocation]"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[TransactionLocation]" />
+                    <inputColumn
+                      refId="Package\Error Handling Flow\Valid Transactions Destination.Inputs[OLE DB Destination Input].Columns[DeviceID]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="DeviceID"
+                      externalMetadataColumnId="Package\Error Handling Flow\Valid Transactions Destination.Inputs[OLE DB Destination Input].ExternalColumns[DeviceID]"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[DeviceID]" />
+                    <inputColumn
+                      refId="Package\Error Handling Flow\Valid Transactions Destination.Inputs[OLE DB Destination Input].Columns[IPAddress]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="IPAddress"
+                      externalMetadataColumnId="Package\Error Handling Flow\Valid Transactions Destination.Inputs[OLE DB Destination Input].ExternalColumns[IPAddress]"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[IPAddress]" />
+                    <inputColumn
+                      refId="Package\Error Handling Flow\Valid Transactions Destination.Inputs[OLE DB Destination Input].Columns[TransactionStatus]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="TransactionStatus"
+                      externalMetadataColumnId="Package\Error Handling Flow\Valid Transactions Destination.Inputs[OLE DB Destination Input].ExternalColumns[TransactionStatus]"
+                      lineageId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output].Columns[TransactionStatus]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Error Handling Flow\Valid Transactions Destination.Inputs[OLE DB Destination Input].ExternalColumns[TransactionID]"
+                      dataType="i8"
+                      name="TransactionID" />
+                    <externalMetadataColumn
+                      refId="Package\Error Handling Flow\Valid Transactions Destination.Inputs[OLE DB Destination Input].ExternalColumns[AccountNumber]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="AccountNumber" />
+                    <externalMetadataColumn
+                      refId="Package\Error Handling Flow\Valid Transactions Destination.Inputs[OLE DB Destination Input].ExternalColumns[CustomerName]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="CustomerName" />
+                    <externalMetadataColumn
+                      refId="Package\Error Handling Flow\Valid Transactions Destination.Inputs[OLE DB Destination Input].ExternalColumns[TransactionType]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="TransactionType" />
+                    <externalMetadataColumn
+                      refId="Package\Error Handling Flow\Valid Transactions Destination.Inputs[OLE DB Destination Input].ExternalColumns[TransactionAmount]"
+                      dataType="numeric"
+                      name="TransactionAmount"
+                      precision="18"
+                      scale="2" />
+                    <externalMetadataColumn
+                      refId="Package\Error Handling Flow\Valid Transactions Destination.Inputs[OLE DB Destination Input].ExternalColumns[TransactionTime]"
+                      dataType="dbTimeStamp"
+                      name="TransactionTime" />
+                    <externalMetadataColumn
+                      refId="Package\Error Handling Flow\Valid Transactions Destination.Inputs[OLE DB Destination Input].ExternalColumns[MerchantCategory]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="MerchantCategory" />
+                    <externalMetadataColumn
+                      refId="Package\Error Handling Flow\Valid Transactions Destination.Inputs[OLE DB Destination Input].ExternalColumns[TransactionLocation]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="TransactionLocation" />
+                    <externalMetadataColumn
+                      refId="Package\Error Handling Flow\Valid Transactions Destination.Inputs[OLE DB Destination Input].ExternalColumns[DeviceID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="DeviceID" />
+                    <externalMetadataColumn
+                      refId="Package\Error Handling Flow\Valid Transactions Destination.Inputs[OLE DB Destination Input].ExternalColumns[IPAddress]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="IPAddress" />
+                    <externalMetadataColumn
+                      refId="Package\Error Handling Flow\Valid Transactions Destination.Inputs[OLE DB Destination Input].ExternalColumns[TransactionStatus]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="TransactionStatus" />
+                    <externalMetadataColumn
+                      refId="Package\Error Handling Flow\Valid Transactions Destination.Inputs[OLE DB Destination Input].ExternalColumns[FraudFlag]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      name="FraudFlag" />
+                    <externalMetadataColumn
+                      refId="Package\Error Handling Flow\Valid Transactions Destination.Inputs[OLE DB Destination Input].ExternalColumns[DW_Load_Time]"
+                      dataType="dbTimeStamp"
+                      name="DW_Load_Time" />
+                    <externalMetadataColumn
+                      refId="Package\Error Handling Flow\Valid Transactions Destination.Inputs[OLE DB Destination Input].ExternalColumns[RiskScore]"
+                      dataType="i4"
+                      name="RiskScore" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Error Handling Flow\Valid Transactions Destination.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\Error Handling Flow\Valid Transactions Destination.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Error Handling Flow\Valid Transactions Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Error Handling Flow\Valid Transactions Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Error Handling Flow\Valid Transactions Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Error Handling Flow\Valid Transactions Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Error Handling Flow.Paths[Conditional Split Error Output]"
+              endId="Package\Error Handling Flow\Union All.Inputs[Union All Input 3]"
+              name="Conditional Split Error Output"
+              startId="Package\Error Handling Flow\Conditional Split.Outputs[Conditional Split Error Output]" />
+            <path
+              refId="Package\Error Handling Flow.Paths[InvalidAmount]"
+              endId="Package\Error Handling Flow\Union All.Inputs[Union All Input 1]"
+              name="InvalidAmount"
+              startId="Package\Error Handling Flow\Conditional Split.Outputs[InvalidAmount]" />
+            <path
+              refId="Package\Error Handling Flow.Paths[OLE DB Source Output]"
+              endId="Package\Error Handling Flow\Conditional Split.Inputs[Conditional Split Input]"
+              name="OLE DB Source Output"
+              startId="Package\Error Handling Flow\OLE DB Source.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\Error Handling Flow.Paths[Union All Output 1]"
+              endId="Package\Error Handling Flow\Rejected Transactions Destination.Inputs[OLE DB Destination Input]"
+              name="Union All Output 1"
+              startId="Package\Error Handling Flow\Union All.Outputs[Union All Output 1]" />
+            <path
+              refId="Package\Error Handling Flow.Paths[ValidRows]"
+              endId="Package\Error Handling Flow\Valid Transactions Destination.Inputs[OLE DB Destination Input]"
+              name="ValidRows"
+              startId="Package\Error Handling Flow\Conditional Split.Outputs[ValidRows]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Execute Incremental Load Procedure"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{B78CEE9E-7CFA-4A53-9D52-F837CC1AB25D}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Execute Incremental Load Procedure"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{359EFA7A-0C6E-4D3C-B64A-CE2662E8EAC3}"
+          SQLTask:SqlStatementSource="EXEC usp_Incremental_Load_Staging;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Execute Warehouse Load Procedure"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{3FE88E9E-37B0-4459-B3A3-6F3ED4AD223F}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Execute Warehouse Load Procedure"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{359EFA7A-0C6E-4D3C-B64A-CE2662E8EAC3}"
+          SQLTask:SqlStatementSource="EXEC usp_Load_Fact_Transactions;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Log ETL Failure"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{116E1DDC-08F2-453C-861E-51C9F9625B54}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Log ETL Failure"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{359EFA7A-0C6E-4D3C-B64A-CE2662E8EAC3}"
+          SQLTask:SqlStatementSource="INSERT INTO ETL_Execution_Log&#xA;(&#xA;    PackageName,&#xA;    ExecutionStatus,&#xA;    RecordsProcessed,&#xA;    ErrorMessage&#xA;)&#xA;&#xA;VALUES&#xA;(&#xA;    'Incremental_Extract.dtsx',&#xA;    'FAILED',&#xA;    0,&#xA;    'ETL Package Failed'&#xA;);" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Log ETL Success"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{7986CADD-26CD-4779-BA65-A08809E1530B}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Log ETL Success"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2025; © 2025 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{359EFA7A-0C6E-4D3C-B64A-CE2662E8EAC3}"
+          SQLTask:SqlStatementSource="INSERT INTO ETL_Execution_Log&#xA;(&#xA;    PackageName,&#xA;    ExecutionStatus,&#xA;    RecordsProcessed,&#xA;    ErrorMessage&#xA;)&#xA;&#xA;VALUES&#xA;(&#xA;    'Incremental_Extract.dtsx',&#xA;    'SUCCESS',&#xA;    ?,&#xA;    NULL&#xA;);" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="User::RowCount"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="3"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{24B58EDF-7EC9-4F06-924F-3340302C5C0D}"
+      DTS:From="Package\Execute Incremental Load Procedure"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Execute Warehouse Load Procedure" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{65D3A08F-2632-4BB5-89AE-4858F0BE0B4A}"
+      DTS:From="Package\Execute Warehouse Load Procedure"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\Log ETL Success" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
+      DTS:CreationName=""
+      DTS:DTSID="{66939A22-83BA-4294-B919-AEA3569EBE58}"
+      DTS:From="Package\Execute Warehouse Load Procedure"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 2"
+      DTS:To="Package\Log ETL Failure"
+      DTS:Value="1" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="171.5,42"
+          Id="Package\Error Handling Flow"
+          TopLeft="452.5,64.9999996771415" />
+        <NodeLayout
+          Size="252,42"
+          Id="Package\Execute Incremental Load Procedure"
+          TopLeft="81,66.0833330050939" />
+        <NodeLayout
+          Size="251,42"
+          Id="Package\Execute Warehouse Load Procedure"
+          TopLeft="330,219.916665574329" />
+        <NodeLayout
+          Size="153.5,42"
+          Id="Package\Log ETL Failure"
+          TopLeft="560,371.428569583666" />
+        <NodeLayout
+          Size="161,42"
+          Id="Package\Log ETL Success"
+          TopLeft="337.285714285714,368.18452200805" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="207,108.083333005094">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="248.5,111.833332569235"
+              Start="0,0"
+              End="248.5,104.333332569235">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,51.9166662846174" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,51.9166662846174"
+                    Point2="0,55.9166662846174"
+                    Point3="4,55.9166662846174" />
+                  <mssgle:LineSegment
+                    End="244.5,55.9166662846174" />
+                  <mssgle:CubicBezierSegment
+                    Point1="244.5,55.9166662846174"
+                    Point2="248.5,55.9166662846174"
+                    Point3="248.5,59.9166662846174" />
+                  <mssgle:LineSegment
+                    End="248.5,104.333332569235" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="416.392857142857,261.916665574329">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,106.267856433721"
+              Start="0,0"
+              End="0,98.7678564337215">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,98.7678564337215" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="496,261.916665574329">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="140.75,109.511904009337"
+              Start="0,0"
+              End="140.75,102.011904009337">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,40.2209588636277" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,40.2209588636277"
+                    Point2="0,44.2209588636277"
+                    Point3="4,44.2209588636277" />
+                  <mssgle:LineSegment
+                    End="136.75,44.2209588636277" />
+                  <mssgle:CubicBezierSegment
+                    Point1="136.75,44.2209588636277"
+                    Point2="140.75,44.2209588636277"
+                    Point3="140.75,48.2209588636277" />
+                  <mssgle:LineSegment
+                    End="140.75,102.011904009337" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="55.1336523437501,49.2209588636277,30.4826953125,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\Error Handling Flow">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="221,42"
+          Id="Package\Error Handling Flow\Valid Transactions Destination"
+          TopLeft="97.8571428571429,398.511902782475" />
+        <NodeLayout
+          Size="155,42"
+          Id="Package\Error Handling Flow\Conditional Split"
+          TopLeft="101.5,152.208332577306" />
+        <NodeLayout
+          Size="239,42"
+          Id="Package\Error Handling Flow\Rejected Transactions Destination"
+          TopLeft="397.5,349.333331600659" />
+        <NodeLayout
+          Size="153.5,42"
+          Id="Package\Error Handling Flow\OLE DB Source"
+          TopLeft="67.5,36.291666486404" />
+        <EdgeLayout
+          Id="Package\Error Handling Flow.Paths[ValidRows]"
+          TopLeft="154.5,194.208332577306">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="53.8571428571429,204.303570205169"
+              Start="0,0"
+              End="53.8571428571429,196.803570205169">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,78.9738637614862" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,78.9738637614862"
+                    Point2="0,82.9738637614862"
+                    Point3="4,82.9738637614862" />
+                  <mssgle:LineSegment
+                    End="49.8571428571429,82.9738637614862" />
+                  <mssgle:CubicBezierSegment
+                    Point1="49.8571428571429,82.9738637614862"
+                    Point2="53.8571428571429,82.9738637614862"
+                    Point3="53.8571428571429,86.9738637614862" />
+                  <mssgle:LineSegment
+                    End="53.8571428571429,196.803570205169" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-4.90265904017856,87.9738637614862,63.6624609375,16"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Error Handling Flow.Paths[OLE DB Source Output]"
+          TopLeft="144.25,78.291666486404">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="34.75,73.916666090902"
+              Start="0,0"
+              End="34.75,66.416666090902">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,32.958333045451" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,32.958333045451"
+                    Point2="0,36.958333045451"
+                    Point3="4,36.958333045451" />
+                  <mssgle:LineSegment
+                    End="30.75,36.958333045451" />
+                  <mssgle:CubicBezierSegment
+                    Point1="30.75,36.958333045451"
+                    Point2="34.75,36.958333045451"
+                    Point3="34.75,40.958333045451" />
+                  <mssgle:LineSegment
+                    End="34.75,66.416666090902" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="9.375,41.958333045451,16,16"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="121,42"
+          Id="Package\Error Handling Flow\Union All"
+          TopLeft="308.333333333333,240.740739688461" />
+        <EdgeLayout
+          Id="Package\Error Handling Flow.Paths[InvalidAmount]"
+          TopLeft="203.5,194.208332577306">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="165.333333333333,46.5324071111553"
+              Start="0,0"
+              End="165.333333333333,39.0324071111553">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,14.8982189800094" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,14.8982189800094"
+                    Point2="0,18.8982189800094"
+                    Point3="4,18.8982189800094" />
+                  <mssgle:LineSegment
+                    End="161.333333333333,18.8982189800094" />
+                  <mssgle:CubicBezierSegment
+                    Point1="161.333333333333,18.8982189800094"
+                    Point2="165.333333333333,18.8982189800094"
+                    Point3="165.333333333333,22.8982189800094" />
+                  <mssgle:LineSegment
+                    End="165.333333333333,39.0324071111553" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="49.9086783854167,23.8982189800094,65.5159765625,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Error Handling Flow.Paths[Conditional Split Error Output]"
+          TopLeft="203.5,194.208332577306">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="165.333333333333,46.5324071111553"
+              Start="0,0"
+              End="165.333333333333,39.0324071111553">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,14.8982189800094" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,14.8982189800094"
+                    Point2="0,18.8982189800094"
+                    Point3="4,18.8982189800094" />
+                  <mssgle:LineSegment
+                    End="161.333333333333,18.8982189800094" />
+                  <mssgle:CubicBezierSegment
+                    Point1="161.333333333333,18.8982189800094"
+                    Point2="165.333333333333,18.8982189800094"
+                    Point3="165.333333333333,22.8982189800094" />
+                  <mssgle:LineSegment
+                    End="165.333333333333,39.0324071111553" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="16.9727604166667,23.8982189800094,131.3878125,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Error Handling Flow.Paths[Union All Output 1]"
+          TopLeft="368.833333333333,282.740739688461">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="148.166666666667,66.5925919121977"
+              Start="0,0"
+              End="148.166666666667,59.0925919121977">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,29.2962959560988" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,29.2962959560988"
+                    Point2="0,33.2962959560988"
+                    Point3="4,33.2962959560988" />
+                  <mssgle:LineSegment
+                    End="144.166666666667,33.2962959560988" />
+                  <mssgle:CubicBezierSegment
+                    Point1="144.166666666667,33.2962959560988"
+                    Point2="148.166666666667,33.2962959560988"
+                    Point3="148.166666666667,37.2962959560988" />
+                  <mssgle:LineSegment
+                    End="148.166666666667,59.0925919121977" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Error Handling Flow\Valid Transactions Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Error Handling Flow\OLE DB Source">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Error Handling Flow\Rejected Transactions Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>
